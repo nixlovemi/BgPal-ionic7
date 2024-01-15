@@ -1,0 +1,9 @@
+[NPM]
+- version node v18.17.0
+- nvm install 18.17.0
+- nvm ls
+- nvm use 18.17.0
+
+[IONIC COMMANDS]
+- ionic serve
+- ionic generate page folder/contact

@@ -1,0 +1,7 @@
+{
+  "name": "BgPal",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
