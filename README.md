@@ -1,0 +1,1 @@
+# BgPal-ionic7
