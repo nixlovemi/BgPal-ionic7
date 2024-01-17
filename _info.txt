@@ -1,9 +1,15 @@
+[LINKS]
+- https://ionicframework.com/docs/components
+- https://dribbble.com/shots/23356431-QuizKwik-Trivia-Quiz-App
+- https://dribbble.com/shots/20438315-Multi-Game-Mobile-Game-Design
+
 [NPM]
-- version node v18.17.0
-- nvm install 18.17.0
+- version node v18.18.0
+- nvm install 18.18.0
 - nvm ls
-- nvm use 18.17.0
+- nvm use 18.18.0
 
 [IONIC COMMANDS]
 - ionic serve
 - ionic generate page folder/contact
+- ionic g service services/storage
