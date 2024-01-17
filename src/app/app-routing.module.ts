@@ -10,6 +10,10 @@ const routes: Routes = [
   {
     path: 'score',
     loadChildren: () => import('./pages/score/score.module').then( m => m.ScorePageModule)
+  },
+  {
+    path: 'score-details/:scoreIdx',
+    loadChildren: () => import('./pages/score-details/score-details.module').then( m => m.ScoreDetailsPageModule)
   }
 ];
 

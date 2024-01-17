@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Score Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="container">
+    <div *ngIf="!loaded">
+      <ion-skeleton-text [animated]="true" style="width:45%; height:20px;"></ion-skeleton-text>
+      <ion-skeleton-text [animated]="true" style="width:20%; height:10px; margin-bottom:40px;"></ion-skeleton-text>
+
+      <ion-segment value="default" class="mb">
+        <ion-segment-button value="default">
+          <ion-skeleton-text [animated]="true" style="width:100%; height:15px;"></ion-skeleton-text>
+        </ion-segment-button>
+        <ion-segment-button value="segment">
+          <ion-skeleton-text [animated]="true" style="width:100%; height:15px;"></ion-skeleton-text>
+        </ion-segment-button>
+      </ion-segment>
+
+      <ion-skeleton-text [animated]="true" style="width:100%; height:100px; margin-bottom:10px;"></ion-skeleton-text>
+      <ion-skeleton-text [animated]="true" style="width:100%; height:100px;"></ion-skeleton-text>
+    </div>
+    
+    <div *ngIf="loaded">
+      <h1>{{ CurrentScore.title }}</h1>
+      <h6 class="mb">{{ CurrentScore.date | date : "dd/MM/YYYY" }}</h6>
+
+      <ion-segment value="default" class="mb">
+        <ion-segment-button value="default" (click)="showByPlayer()">
+          <ion-label>By Player</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="segment" (click)="showByColumn()">
+          <ion-label>By Column</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+
+      <ion-accordion-group *ngIf="byPlayer">
+        <ion-accordion value="{{ i }}" *ngFor="let scoreItem of playerInScoreOrder; let i = index">
+          <ion-item slot="header" color="light">
+            <ion-badge slot="start">{{ scoreItem.totalScore }}</ion-badge>
+            <ion-label>{{ scoreItem.playerName }}</ion-label>
+            <ion-icon *ngIf="i == 0" color="warning" slot="end" name="trophy" size="small"></ion-icon>
+          </ion-item>
+          <div slot="content">
+            <ion-list [inset]="true">
+              <ion-item *ngFor="let score of scoreItem.scores; let ii = index">
+                <ion-label>{{ CurrentScore.columns[ii].title ?? '' }}</ion-label>
+                <ion-badge slot="end">{{ score }}</ion-badge>
+              </ion-item>
+            </ion-list>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
+
+      <ion-accordion-group *ngIf="byColumn">
+        <ion-accordion value="{{ i }}" *ngFor="let column of CurrentScore.columns; let i = index">
+          <ion-item slot="header" color="light">
+            <ion-label>{{ column.title }}</ion-label>
+          </ion-item>
+          <div slot="content">
+            <ion-list [inset]="true">
+              <ion-item *ngFor="let colScore of getSortedColumnScores(i); let ii = index">
+                <ion-label>{{ CurrentScore.players[colScore.playerIdx].name ?? '' }}</ion-label>
+                <ion-badge slot="end">{{ colScore.value ?? '' }}</ion-badge>
+              </ion-item>
+            </ion-list>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
+    </div>
+  </div>
+</ion-content>
