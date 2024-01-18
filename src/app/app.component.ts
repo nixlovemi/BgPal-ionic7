@@ -7,7 +7,7 @@ import { StorageService } from './services/storage.service';
 })
 export class AppComponent {
   public appPages = [
-    { title: 'Score Aid', url: '/pages/score', icon: 'trophy' },
+    { title: 'Score Aid', url: '/score', icon: 'trophy' },
   ];
   
   constructor(private storage: StorageService) { }

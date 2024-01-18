@@ -11,5 +11,5 @@
 
 [IONIC COMMANDS]
 - ionic serve
-- ionic generate page folder/contact
+- ionic g page folder/contact
 - ionic g service services/storage
