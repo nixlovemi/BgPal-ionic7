@@ -83,4 +83,14 @@ export class Score {
         // return last index
         return json.length - 1;
     }
+
+    delete(index: number) {
+        this.storage.get(DB_KEY_SCORES).then((json: Array<any>) => {
+            // delete item
+            json.splice(index, 1);
+
+            // save to storage
+            this.storage.set(DB_KEY_SCORES, json);
+        });
+    }
 }

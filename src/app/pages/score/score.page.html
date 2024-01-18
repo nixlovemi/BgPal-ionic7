@@ -24,16 +24,23 @@
       </div>
 
       <div *ngIf="scoreList.length !== 0">
-        <ion-item
-          no-margin
-          [button]="true"
-          *ngFor="let score of scoreList; let i = index"
-          (click)="openScoreDetails(i)"
-        >
-          <ion-icon color="warning" slot="start" name="list-circle" size="large"></ion-icon>
-          <ion-label>{{ score.title }}</ion-label>
-          <ion-note slot="end">{{ score.date | date : "dd/MM/YYYY" }}</ion-note>
-        </ion-item>
+        <ion-item-sliding *ngFor="let score of scoreList; let i = index">
+          <ion-item-options side="end">
+            <ion-item-option color="danger" (click)="deleteScoreList(i)">
+              <ion-icon slot="icon-only" name="trash"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+
+          <ion-item
+            no-margin
+            [button]="true"
+            (click)="openScoreDetails(i)"
+          >
+            <ion-icon color="warning" slot="start" name="list-circle" size="large"></ion-icon>
+            <ion-label>{{ score.title }}</ion-label>
+            <ion-note slot="end">{{ score.date | date : "dd/MM/YYYY" }}</ion-note>
+          </ion-item>
+        </ion-item-sliding>
       </div>
     </ion-list>
   </div>
