@@ -132,4 +132,8 @@ export class ScorePage implements OnInit {
   openScoreDetails(scoreIdx: number) {
     this.navCtrl.navigateForward('/score-details/' + scoreIdx);
   }
+
+  openScoreAdd() {
+    this.navCtrl.navigateForward('/score-add', {skipLocationChange: true});
+  }
 }

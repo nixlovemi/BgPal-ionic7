@@ -67,7 +67,7 @@ export class Score {
         return playerIdxOrderByTotalScore;
     }
 
-    async save() {
+    async save(): Promise<number> {
         // add this score as JSON to /assets/score
         let json: Array<any> = await this.storage.get(DB_KEY_SCORES) ?? [];
         // console.log('class score list: save: json before', json);
@@ -79,8 +79,8 @@ export class Score {
         // save to storage
         // console.log('class score list: save: saving to storage');
         await this.storage.set(DB_KEY_SCORES, json);
-
-        // console.log('class score list: save: testing storage');
-        let test = await this.storage.get(DB_KEY_SCORES);
+        
+        // return last index
+        return json.length - 1;
     }
 }

@@ -10,23 +10,31 @@
 <ion-content [fullscreen]="true">
   <div class="container">
     <div class="center mb">
-      <ion-button>New Score List</ion-button>
+      <ion-button (click)="openScoreAdd()">New Score List</ion-button>
     </div>
 
     <hr />
 
     <h2>Saved scores</h2>
     <ion-list class="saved-scores">
-      <ion-item
-        no-margin
-        [button]="true"
-        *ngFor="let score of scoreList; let i = index"
-        (click)="openScoreDetails(i)"
-      >
-        <ion-icon color="warning" slot="start" name="list-circle" size="large"></ion-icon>
-        <ion-label>{{ score.title }}</ion-label>
-        <ion-note slot="end">{{ score.date | date : "dd/MM/YYYY" }}</ion-note>
-      </ion-item>
+      <div *ngIf="scoreList.length === 0">
+        <ion-item>
+          <ion-label><i>No saved scores, yet</i></ion-label>
+        </ion-item>
+      </div>
+
+      <div *ngIf="scoreList.length !== 0">
+        <ion-item
+          no-margin
+          [button]="true"
+          *ngFor="let score of scoreList; let i = index"
+          (click)="openScoreDetails(i)"
+        >
+          <ion-icon color="warning" slot="start" name="list-circle" size="large"></ion-icon>
+          <ion-label>{{ score.title }}</ion-label>
+          <ion-note slot="end">{{ score.date | date : "dd/MM/YYYY" }}</ion-note>
+        </ion-item>
+      </div>
     </ion-list>
   </div>
 </ion-content>  

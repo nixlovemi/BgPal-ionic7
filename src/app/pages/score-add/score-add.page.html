@@ -1,0 +1,186 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Add Score</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="container">
+    <div *ngIf="step == 1" class="center">
+      <h2>Game name</h2>
+      <ion-list class="mb">
+        <ion-item>
+          <ion-input
+            [(ngModel)]="optGameName"
+            label="Game Name"
+            labelPlacement="stacked"
+            [clearInput]="true"
+            placeholder="Enter game name"
+          >
+          </ion-input>
+        </ion-item>
+      </ion-list>
+
+      <h2>How many players?</h2>
+      <ion-list class="mb">
+        <ion-item>
+          <ion-select placeholder="Select ..." fill="solid" [(ngModel)]="optPlayers">
+            <ion-select-option *ngFor="let nbr of maxPlayers" [value]="nbr">
+              {{ nbr }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+
+      <ion-button expand="block" (click)="moveToStep(2)">
+        Next
+        <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+      </ion-button>
+    </div>
+
+    <div *ngIf="step == 2" class="center">
+      <h2>Players name</h2>
+      <ion-list class="mb">
+        <ion-item>
+          <ion-input
+            [(ngModel)]="optPlayerNames[i]"
+            *ngFor="let playerName of optPlayerNames; let i = index; trackBy:trackByIdx"
+            label="#{{ i+1 }} Player Name"
+            labelPlacement="stacked"
+            [clearInput]="true"
+            placeholder="Enter player name"
+            [value]="playerName"
+          >
+          </ion-input>
+        </ion-item>
+      </ion-list>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-button expand="block" (click)="moveToStep(1)" color="light">
+              <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+              Prev
+            </ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button expand="block" (click)="moveToStep(3)">
+              Next
+              <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+    <div *ngIf="step == 3" class="center">
+      <ion-label>
+        <h1>How many columns?</h1>
+        <p>Examples: First Round, Second Round, Wonders, Military, etc</p>
+      </ion-label>
+      <ion-list class="mb">
+        <ion-item>
+          <ion-select placeholder="Select ..." fill="solid" [(ngModel)]="optColumns">
+            <ion-select-option *ngFor="let nbr of maxColumns" [value]="nbr">
+              {{ nbr }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-button expand="block" (click)="moveToStep(2)" color="light">
+              <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+              Prev
+            </ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button expand="block" (click)="moveToStep(4)">
+              Next
+              <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+    <div *ngIf="step == 4" class="center">
+      <h2>Columns name</h2>
+      <ion-list class="mb">
+        <ion-item>
+          <ion-input
+            [(ngModel)]="optColumnNames[i]"
+            *ngFor="let columnName of optColumnNames; let i = index; trackBy:trackByIdx"
+            label="#{{ i+1 }} Column Name"
+            labelPlacement="stacked"
+            [clearInput]="true"
+            placeholder="Enter column name"
+            [value]="columnName"
+          >
+          </ion-input>
+        </ion-item>
+      </ion-list>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-button expand="block" (click)="moveToStep(3)" color="light">
+              <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+              Prev
+            </ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button expand="block" (click)="moveToStep(5)">
+              Next
+              <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+    <div *ngIf="step == 5" class="center">
+      <h2>Scores</h2>
+
+      <div *ngFor="let arrScore of optScore; let i = index;">
+        <h4 class="text-left">{{ optPlayerNames[i] ?? '' }}</h4>
+        <ion-list class="mb">
+          <ion-item *ngFor="let col of arrScore; let ii = index; trackBy:trackByIdx">
+            <ion-input
+              label="{{ optColumnNames[ii] }}"
+              type="number"
+              inputmode="numeric"
+              [(ngModel)]="optScore[i][ii]"
+              class="text-right"
+            ></ion-input>
+          </ion-item>
+        </ion-list>
+      </div>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-button expand="block" (click)="moveToStep(4)" color="light">
+              <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+              Prev
+            </ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button class="mb" expand="block" (click)="finish()">
+              Finish
+              <ion-icon slot="end" name="checkmark-circle"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </div>
+</ion-content>
