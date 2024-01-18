@@ -151,7 +151,7 @@
       <h2>Scores</h2>
 
       <div *ngFor="let arrScore of optScore; let i = index;">
-        <h4 class="text-left">{{ optPlayerNames[i] ?? '' }}</h4>
+        <h4 class="text-left">{{ optPlayerNames[i] }}</h4>
         <ion-list class="mb">
           <ion-item *ngFor="let col of arrScore; let ii = index; trackBy:trackByIdx">
             <ion-input
