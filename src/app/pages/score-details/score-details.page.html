@@ -34,7 +34,10 @@
         <ion-segment-button value="default" (click)="showByPlayer()">
           <ion-label>By Player</ion-label>
         </ion-segment-button>
-        <ion-segment-button value="segment" (click)="showByColumn()">
+        <ion-segment-button value="segmentRound" (click)="showByRound()">
+          <ion-label>By Round</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="segmentCol" (click)="showByColumn()">
           <ion-label>By Column</ion-label>
         </ion-segment-button>
       </ion-segment>
@@ -46,13 +49,49 @@
             <ion-label>{{ scoreItem.playerName }}</ion-label>
             <ion-icon *ngIf="i == 0" color="warning" slot="end" name="trophy" size="small"></ion-icon>
           </ion-item>
+
           <div slot="content">
-            <ion-list [inset]="true">
-              <ion-item *ngFor="let score of scoreItem.scores; let ii = index">
-                <ion-label>{{ CurrentScore.columns[ii].title ?? '' }}</ion-label>
-                <ion-badge slot="end">{{ score }}</ion-badge>
-              </ion-item>
-            </ion-list>
+            <div *ngFor="let roundScore of scoreItem.scorePerRound; let ii = index">
+              <h2>Round {{ ii + 1 }}</h2>
+              
+              <ion-list [inset]="true">
+                <ion-item *ngFor="let score of roundScore; let iii = index">
+                  <ion-label>{{ CurrentScore.columns[iii].title ?? '' }}</ion-label>
+                  <ion-badge slot="end">{{ score }}</ion-badge>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label>Total:</ion-label>
+                  <ion-badge slot="end">{{ getPlayerScoreTotalByRound(scoreItem.playerIdx, ii) }}</ion-badge>
+                </ion-item>
+              </ion-list>
+            </div>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
+
+      <ion-accordion-group *ngIf="byRound">
+        <ion-accordion value="{{ i }}" *ngFor="let roundItem of playerInRoundOrder; let i = index">
+          <ion-item slot="header" color="light">
+            <ion-label>Round {{ i + 1 }}</ion-label>
+          </ion-item>
+
+          <div slot="content">
+            <div *ngFor="let playerInfo of roundItem; let ii = index">
+              <h3>{{ CurrentScore.players[ii].name }}</h3>
+
+              <ion-list [inset]="true">
+                <ion-item *ngFor="let score of playerInfo; let iii = index">
+                  <ion-label>{{ CurrentScore.columns[iii].title ?? '' }}</ion-label>
+                  <ion-badge slot="end">{{ score }}</ion-badge>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label>Total:</ion-label>
+                  <ion-badge slot="end">{{ getPlayerScoreTotalByRound(ii, i) }}</ion-badge>
+                </ion-item>
+              </ion-list>
+            </div>
           </div>
         </ion-accordion>
       </ion-accordion-group>
@@ -62,13 +101,18 @@
           <ion-item slot="header" color="light">
             <ion-label>{{ column.title }}</ion-label>
           </ion-item>
+
           <div slot="content">
-            <ion-list [inset]="true">
-              <ion-item *ngFor="let colScore of getSortedColumnScores(i); let ii = index">
-                <ion-label>{{ CurrentScore.players[colScore.playerIdx].name ?? '' }}</ion-label>
-                <ion-badge slot="end">{{ colScore.value ?? '' }}</ion-badge>
-              </ion-item>
-            </ion-list>
+            <div *ngFor="let roundColScore of getSortedColumnScores(i); let ii = index">
+              <h2>Round {{ ii + 1 }}</h2>
+
+              <ion-list [inset]="true">
+                <ion-item *ngFor="let colScore of roundColScore; let iii = index">
+                  <ion-label>{{ CurrentScore.players[colScore.playerIdx].name ?? '' }}</ion-label>
+                  <ion-badge slot="end">{{ colScore.value ?? '' }}</ion-badge>
+                </ion-item>
+              </ion-list>
+            </div>
           </div>
         </ion-accordion>
       </ion-accordion-group>

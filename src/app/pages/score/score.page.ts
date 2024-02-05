@@ -56,7 +56,7 @@ export class ScorePage implements OnInit {
 
       // scores
       for (let j = 0; j < json[i].scores.length; j++) {
-        FakeScore.addScore(json[i].scores[j].playerIdx, json[i].scores[j].columnIdx, json[i].scores[j].value);
+        FakeScore.addScore(json[i].scores[j].roundIdx, json[i].scores[j].playerIdx, json[i].scores[j].columnIdx, json[i].scores[j].value);
       }
 
       // add to list to display

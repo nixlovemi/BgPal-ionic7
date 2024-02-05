@@ -12,8 +12,14 @@ import { StorageService } from '../../services/storage.service';
 })
 export class ScoreAddPage implements OnInit {
   step = 1;
+  scorePerRound: Array<Array<any>> = [];
+  currentRound: number = 1;
+
+  maxRounds: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   maxPlayers: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
   maxColumns: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+
+  optRounds: number = 1;
   optGameName: string = '';
   optPlayers: number = 2;
   optColumns: number = 2;
@@ -58,12 +64,17 @@ export class ScoreAddPage implements OnInit {
       }
 
       case 5: {
-        this.optScore = [];
-        for (let i = 0; i < this.optPlayers; i++) {
-          this.optScore.push([]);
-          for (let j = 0; j < this.optColumns; j++) {
-            this.optScore[i].push(0);
+        this.scorePerRound = [];
+        for (let i = 0; i < this.optRounds; i++) {
+          this.optScore = [];
+          for (let j = 0; j < this.optPlayers; j++) {
+            this.optScore.push([]);
+            for (let k = 0; k < this.optColumns; k++) {
+              this.optScore[j].push(0);
+            }
           }
+
+          this.scorePerRound.push(this.optScore);
         }
         break;
       }
@@ -125,6 +136,15 @@ export class ScoreAddPage implements OnInit {
     return message;
   }
 
+  calcRoundScoreByPlayer(round: number, player: number): number {
+    let score = 0;
+    for (let i = 0; i < this.optColumns; i++) {
+      score += this.scorePerRound[round][player][i];
+    }
+
+    return score;
+  }
+
   async finish() {
     this.utilsSrv.showAlert('Confirm Finish', '', 'Are you sure? This action can\'t be undone.', [
       {
@@ -159,9 +179,11 @@ export class ScoreAddPage implements OnInit {
     }
 
     // set score
-    for (let i = 0; i < this.optPlayers; i++) {
-      for (let j = 0; j < this.optColumns; j++) {
-        scoreList.addScore(i, j, this.optScore[i][j]);
+    for (let i = 0; i < this.optRounds; i++) {
+      for (let j = 0; j < this.optPlayers; j++) {
+        for (let k = 0; k < this.optColumns; k++) {
+          scoreList.addScore(i, j, k, this.scorePerRound[i][j][k]);
+        }
       }
     }
 

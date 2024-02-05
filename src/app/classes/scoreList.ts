@@ -26,8 +26,8 @@ export class Score {
         this.columns.push({title});
     }
 
-    addScore(playerIdx: number, columnIdx: number, value: number) {
-        this.scores.push({playerIdx, columnIdx, value});
+    addScore(roundIdx: number, playerIdx: number, columnIdx: number, value: number) {
+        this.scores.push({roundIdx, playerIdx, columnIdx, value});
     }
 
     toJSON() {
@@ -40,23 +40,59 @@ export class Score {
         };
     }
 
+    getPlayerIdxOrderByRoundScore() {
+        // create arrRound
+        let arrRound = ([] as any[]);
+        for (let j = 0; j < this.scores.length; j++) {
+            let round = this.scores[j].roundIdx;
+            if (!(round in arrRound)) {
+                arrRound[round] = [];
+            }
+        }
+
+        // add to arrRound players, columns and scores
+        for (let j = 0; j < this.scores.length; j++) {
+            let round = this.scores[j].roundIdx;
+            let playerIdx = this.scores[j].playerIdx;
+            let columnIdx = this.scores[j].columnIdx;
+            let value = this.scores[j].value;
+
+            if (!(playerIdx in arrRound[round])) {
+                arrRound[round][playerIdx] = [];
+            }
+
+            if (!(columnIdx in arrRound[round][playerIdx])) {
+                arrRound[round][playerIdx][columnIdx] = 0;
+            }
+
+            arrRound[round][playerIdx][columnIdx] = value;
+        }
+
+        return arrRound;
+    }
+
     getPlayerIdxOrderByTotalScore() {
         let playerIdxOrderByTotalScore = ([] as any[]);
 
         // get total score for each player
         for (let i = 0; i < this.players.length; i++) {
             let totalScore = 0;
-            let scores = ([] as any[]);
+            let scorePerRound: Array<Array<any>> = [];
             let playerName = this.players[i].name;
 
             for (let j = 0; j < this.scores.length; j++) {
+                let round = this.scores[j].roundIdx;
+                if (!(round in scorePerRound)) {
+                    scorePerRound[round] = [];
+                }
+
                 if (this.scores[j].playerIdx === i) {
-                    scores.push(this.scores[j].value);
+                    scorePerRound[round].push(this.scores[j].value);
                     totalScore += this.scores[j].value;
                 }
             }
 
-            playerIdxOrderByTotalScore.push({playerIdx: i, playerName, scores, totalScore});
+            playerIdxOrderByTotalScore.push({playerIdx: i, playerName, scorePerRound, totalScore});
         }
 
         // sort by total score

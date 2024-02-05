@@ -27,6 +27,20 @@
         </ion-item>
       </ion-list>
 
+      <ion-label>
+        <h1>Score for how many rounds?</h1>
+        <p>Select more than one if the game is like Sushi Go, etc</p>
+      </ion-label>
+      <ion-list class="mb">
+        <ion-item>
+          <ion-select placeholder="Select ..." fill="solid" [(ngModel)]="optRounds">
+            <ion-select-option *ngFor="let nbr of maxRounds" [value]="nbr">
+              {{ nbr }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+
       <h2>How many players?</h2>
       <ion-list class="mb">
         <ion-item>
@@ -82,7 +96,7 @@
     <div *ngIf="step == 3" class="center">
       <ion-label>
         <h1>How many columns?</h1>
-        <p>Examples: First Round, Second Round, Wonders, Military, etc</p>
+        <p>Examples: Maki, Rolls, Wonders, Military, etc</p>
       </ion-label>
       <ion-list class="mb">
         <ion-item>
@@ -150,20 +164,34 @@
     <div *ngIf="step == 5" class="center">
       <h2>Scores</h2>
 
-      <div *ngFor="let arrScore of optScore; let i = index;">
-        <h4 class="text-left">{{ optPlayerNames[i] }}</h4>
-        <ion-list class="mb">
-          <ion-item *ngFor="let col of arrScore; let ii = index; trackBy:trackByIdx">
-            <ion-input
-              label="{{ optColumnNames[ii] }}"
-              type="number"
-              inputmode="numeric"
-              [(ngModel)]="optScore[i][ii]"
-              class="text-right"
-            ></ion-input>
+      <ion-accordion-group class="mb">
+        <ion-accordion value="{{ j }}" *ngFor="let arrSPR of scorePerRound; let j = index;">
+          <ion-item slot="header" color="light">
+            <ion-label>Round {{ j + 1 }}</ion-label>
           </ion-item>
-        </ion-list>
-      </div>
+          <div class="ion-padding" slot="content">
+            <div *ngFor="let arrScore of optScore; let i = index;">
+              <h4 class="text-left">{{ optPlayerNames[i] }}</h4>
+              <ion-list class="mb">
+                <ion-item *ngFor="let col of arrScore; let ii = index; trackBy:trackByIdx">
+                  <ion-input
+                    label="{{ optColumnNames[ii] }}"
+                    type="number"
+                    inputmode="numeric"
+                    [(ngModel)]="scorePerRound[j][i][ii]"
+                    class="text-right"
+                  ></ion-input>
+                </ion-item>
+
+                <ion-item slot="header" color="light">
+                  <ion-label>Total:</ion-label>
+                  <ion-badge slot="end">{{ calcRoundScoreByPlayer(j, i) }}</ion-badge>
+                </ion-item>
+              </ion-list>
+            </div>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
 
       <ion-grid>
         <ion-row>
